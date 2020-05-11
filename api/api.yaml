@@ -1,0 +1,64 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Task List
+servers:
+  - url: http://127.0.0.1/
+paths:
+  /tasks:
+    get:
+      description: returns task list
+      responses:
+        '200':
+          description: all tasks in list
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TaskList'
+  /task:
+    post:
+      description: creates new task
+      requestBody:
+        description: task to create
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: created task
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Task'
+  /task/{id}:
+    delete:
+      description: deletes task by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: not found
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+    TaskList:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
